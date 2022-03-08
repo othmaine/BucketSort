@@ -1,0 +1,115 @@
+class Bucket
+{
+    private int[] a;
+    private int nDigit;
+    private int nElem;
+    private int[][][] helper;
+    
+    //(1)creation-------------
+    public Bucket(int max , int ndigit)
+    {
+        a = new int[max];
+        nElem =0;
+        nDigit = ndigit;
+    }
+    
+    //(2)insert-----------------------
+    public void insert(int number)
+    {
+        a[nElem] = number;
+        nElem ++;
+    }
+    
+    //(3)display-----------------------
+    public void display()
+    {
+        for(int i =0; i<nElem;i++)
+        {
+            System.out.println("arr[" + i + "]=" + a[i]);
+        }
+        System.out.println("------------------------");
+    }
+    
+    private void insHelper()
+    {
+        helper = new int[nElem][10][2];
+    }
+    
+    private void readArr()
+    {
+        
+    }
+    
+    private int getDigit(int number,int place) 
+    {
+        
+        int digit=0;
+        for(int i =1;i<=place;i++)
+        {
+           digit= number %10;
+           number /= 10;
+        }
+        return digit;
+    }
+    
+    private void setHelper(int place)
+    {
+        for(int i =0; i<nElem; i++)
+        {
+            int number = getDigit(a[i],place);
+            helper[i][number][0] = a[i];
+            helper[i][number][1] = 1;
+        }
+    }
+    private void setArr()
+    {
+        int k =0;
+        for(int j =0;j<10;j++)
+        {
+            for(int i = 0; i<nElem;i++)
+            {
+                if(helper[i][j][1] == 1)
+                {
+                    a[k] = helper[i][j][0];
+                    k++;
+                    helper[i][j][1] = 0;
+                }
+
+            }
+        }
+    }
+    public void sort()
+    {
+        insHelper();
+        //System.out.println(nDigit);
+        for(int i =1;i<=nDigit;i++)
+        {
+            setHelper(i);
+            setArr();
+        }
+        display();
+    }
+}
+
+public class BucketSortApp 
+{
+    public static void main(String[] args) 
+    {
+        Bucket buck = new Bucket(100,2);
+        buck.insert(15);
+        buck.insert(9);
+        buck.insert(8);
+        buck.insert(7);
+        buck.insert(6);
+        buck.insert(5);
+        buck.insert(5);
+        buck.insert(40);
+        buck.insert(30);
+        buck.insert(0);
+        buck.insert(1);
+        
+        buck.sort();
+        
+    }
+    
+}
